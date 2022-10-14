@@ -1,0 +1,1 @@
+mesh = o3d.io.read_triangle_mesh("data/bunny.ply")
