@@ -22,7 +22,7 @@ Let’s start by importing the libraries:
 
 [import_libs](./import_libs.py)
 
-2.1. Random point cloud
+Random point cloud
 The easiest way is to create a point cloud randomly. Note that we don’t usually create random points to be processed, except to create noise for GANs (Generative Adversarial Networks) for example.
 
 Generally, point clouds are represented by (n × 3) arrays where n is the number of points. Let’s create a point cloud with 5 random points:
@@ -35,7 +35,7 @@ We can just print these points but it is not efficient especially if the number 
 
 ![](./images/2.gif)
 
-2.2. Sampled point cloud
+Sampled point cloud
 Sometimes processing 3D models directly takes time and memory. Therefore, sampling point clouds from their 3D surfaces is a potential solution. Let’s import the bunny model from the Open3D dataset:
 
 [import_mesh_o3d](./import_mesh_o3d.py)
@@ -60,7 +60,7 @@ We can save the created point cloud in .ply format as follows:
 
 [save_pcd_ply](./save_pcd_ply.py)
 
-2.3. Point clouds from RGB-D data
+Point clouds from RGB-D data
 RGB-D data is collected using RGB-D sensors (such as Microsoft Kinect) which simultaneously provide an RGB image and a depth image. RGB-D sensors are involved in many applications such as indoor navigation, obstacle avoidance, etc. As the RGB image provides the pixel color, each pixel of the depth image indicates its distance from the camera.
 
 Open3D provides a set of functions for RGB-D image processing. To create point clouds from RGB-D data using Open3D functions just import the two images, create an RGB-D image object and finally compute the point cloud as follows:
@@ -72,14 +72,14 @@ Open3D provides a set of functions for RGB-D image processing. To create point c
 3. Open3D and NumPy
 Sometimes you will need to switch between Open3D and NumPy representations. For example, let’s say we want to convert a NumPy point cloud to an Open3D.PointCloud object for visualization, and visualize the 3D model of bunny using Matplotlib.
 
-3.1. From NumPy to Open3D
+From NumPy to Open3D
 In this example, we create 2000 random points using NumPy.random.rand() function that creates random samples from a uniform distribution over [0,1[. Then we create an Open3D.PointCloud object and set its Open3D.PointCloud.points feature to the random points using Open3D.utility.Vector3dVector() function.
 
 [numpy_open3d](./numpy_open3d.py)
 
 ![](./images/6.gif)
 
-3.2. From Open3D to NumPy
+From Open3D to NumPy
 Here, we first read the point cloud from a .ply file using Open3D.io.read_point_cloud() function that returns an Open3D.PointCloud object. After that, we only have to transform the Open3D.PointCloud.points feature that represents the points to a NumPy array using NumPy.asarray() function. Finally, we display the obtained array as we did above.
 
 [open3d_numpy](./open3d_numpy.py)
@@ -133,7 +133,7 @@ Note that, Matplotlib does the same thing when visualizing the depth image:
 2. Point cloud
 Now that we have imported and displayed the depth image, how can we estimate the point cloud from it? The first step is to calibrate the depth camera to estimate the camera matrix and then use it to compute the point cloud. The obtained point cloud is also called 2.5D point cloud since it is estimated from a 2D projection (depth image) instead of 3D sensors such as laser sensors.
 
-2.2. Depth camera calibration
+Depth camera calibration
 Calibrating a camera means estimating lens and sensor parameters by finding the distortion coefficients and the camera matrix also called the intrinsic parameters. In general, there are three methods for calibrating a camera : using the standard parameters provided by the factory, using the results obtained in calibration research or calibrating the Kinect manually. Calibrating the camera manually consists of applying one of the calibration algorithm such as the chess-board algorithm[1]. This algorithm is implemented in Robot Operating System (ROS) and OpenCV. The calibration matrix M is a 3×3 matrix:
 
 ![](./images/matrix.png)
@@ -144,7 +144,7 @@ Where fx, fy and cx, cy are the focal length and the optical centers respectivel
 
 If you want to calibrate the camera yourself you can refer to [this OpenCV tutorial](https://docs.opencv.org/4.6.0/dc/dbb/tutorial_py_calibration.html).
 
-2.3 Point cloud computing
+Point cloud computing
 Computing point cloud here means transforming the depth pixel from the depth image 2D coordinate system to the depth camera 3D coordinate system (x, y and z). The 3D coordinates are computed using the following formulas [2], where depth(i, j) is the depth value at the row i and column j:
 
 ![](./images/8.png)
@@ -211,7 +211,7 @@ Let’s put all together and display the point cloud:
 4. Code optimization
 In this section, we explain how to optimize your code to be more efficient and suitable for real-time applications.
 
-4.1 Point cloud
+Point cloud
 Computing point clouds using nested loops is time consuming. For a depth image with 480×640 as resolution, on a machine having 8GB RAM and an i7–4500 CPU, computing the point cloud took about 2.154 seconds.
 
 To reduce the computation time, nested loops can be replaced by vectorisation operations and the computation time can be reduced to about 0.024 seconds:
@@ -222,7 +222,7 @@ We can also reduce the computation time to about 0.015 seconds by computing the 
 
 [pcd_optimisation](./pcd_optimisation.py)
 
-4.2 Colored point cloud
+Colored point cloud
 As for the colored point cloud, on the same machine, executing the previous example took about 36.263 seconds. By applying vectorisation, the running time is reduced down to 0.722 seconds.
 
 [colored_pcd_optimisation](./colored_pcd_optimisation.py)
